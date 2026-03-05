@@ -1596,11 +1596,11 @@ footer::before {
             <div class="tool-badge"><span class="tool-dot"></span>CAPCUT // VIDEO &amp; SHORT-FORM CONTENT</div>
             <p class="gallery-hint">Replace placeholder cards with your own screenshots or thumbnails</p>
             <div class="photo-grid">
-              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="Sample.mp4" data-thumb="Sample2.jpg" data-title="REEL EDIT #1" data-tag="TRANSITION · MUSIC SYNC" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
-              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="videos/capcut-reel-2.mp4" data-thumb="thumbnails/capcut-reel-2.jpg" data-title="REEL EDIT #2" data-tag="COLOR GRADE · CUTS" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
-              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="videos/capcut-shortfilm.mp4" data-thumb="thumbnails/capcut-shortfilm.jpg" data-title="SHORT FILM CUT" data-tag="STORYTELLING · PACING" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
-              <div class="photo-card span2 media-card" data-tool="capcut" data-type="video" data-src="videos/capcut-brandpromo.mp4" data-thumb="thumbnails/capcut-brandpromo.jpg" data-title="BRAND PROMO VIDEO" data-tag="CINEMATIC · TYPOGRAPHY" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
-              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="videos/capcut-viral.mp4" data-thumb="thumbnails/capcut-viral.jpg" data-title="VIRAL FORMAT" data-tag="HOOK · CTA" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
+              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="https://drive.google.com/file/d/1FkAhXA7RpMJ9b1c7ZfS_-Y_EUHggCJXg/view?usp=sharing" data-thumb="Thumbnails/Capcut/Rexy.png" data-title="Rexy" data-tag="MONTAGE · MUSIC SYNC" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
+              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="https://drive.google.com/file/d/1btdqXagfNZ11qB6x14pNk8kEeynk7m_Y/view?usp=sharing" data-thumb="Thumbnails/Capcut/Benefactor_Schlagen_GT.png" data-title="Benefactor Schlagen GT" data-tag="COLOR GRADE · CUTS" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
+              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="https://drive.google.com/file/d/10Hmb2dFmhDP5LM8StsjGab0l-fspTJYP/view?usp=sharing" data-thumb="Thumbnails/Capcut/Echo_meet.png" data-title="Echo Meet" data-tag="STORYTELLING · PACING" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
+              <div class="photo-card span2 media-card" data-tool="capcut" data-type="video" data-src="https://drive.google.com/file/d/1M36wZVPI9C0ooHsH14iZHAND72tctO80/view?usp=sharing" data-thumb="Thumbnails/Capcut/Utopia_Dinka_Jester_RR.png" data-title="Utopia: Dinka Jester RR" data-tag="CINEMATIC · TYPOGRAPHY" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
+              <div class="photo-card media-card" data-tool="capcut" data-type="video" data-src="https://drive.google.com/file/d/1HQ8rmZYnbOS90V-V-sEXK_uZSVFE3QhK/view?usp=sharing" data-thumb="Thumbnails/Capcut/Ford_GT_Christmas.png" data-title="Ford GT Christmas" data-tag="HOOK · CTA" onclick="openVideoModal(this)"><div class="photo-card-bg"><div class="card-symbol">▶</div></div><div class="media-badge"><div class="media-badge-icon">▶</div><span class="media-badge-label">PLAY</span></div></div>
             </div>
           </div>
         </div>
@@ -1857,6 +1857,24 @@ function toggleGallery(btn) {
    ============================================= */
 let activeVideo = null;
 
+/* Convert any Google Drive share/view URL → embed URL.
+   Handles formats:
+   - https://drive.google.com/file/d/FILE_ID/view?...
+   - https://drive.google.com/open?id=FILE_ID
+   - https://drive.google.com/uc?id=FILE_ID
+   Returns null if not a Drive URL.                        */
+function driveEmbedUrl(src) {
+  if (!src.includes('drive.google.com')) return null;
+  let id = null;
+  const fileMatch = src.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (fileMatch) { id = fileMatch[1]; }
+  else {
+    const paramMatch = src.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (paramMatch) id = paramMatch[1];
+  }
+  return id ? `https://drive.google.com/file/d/${id}/preview` : null;
+}
+
 function openVideoModal(card) {
   const src   = card.dataset.src   || '';
   const title = card.dataset.title || 'VIDEO';
@@ -1870,24 +1888,42 @@ function openVideoModal(card) {
   wrap.innerHTML = '';
 
   if (!src || src.startsWith('your-')) {
+    // No file set yet — show placeholder
     wrap.innerHTML = `
       <div class="vmodal-placeholder">
         <div class="ph-icon">&#9654;</div>
         <p>NO VIDEO FILE LINKED YET</p>
-        <p>SET THE <code>data-src</code> ATTRIBUTE ON THIS CARD TO YOUR VIDEO PATH.</p>
-        <p style="color:var(--neon-yellow);font-size:10px;">EXAMPLE: data-src="videos/my-reel.mp4"</p>
+        <p>SET THE <code>data-src</code> ATTRIBUTE ON THIS CARD TO YOUR VIDEO PATH OR GOOGLE DRIVE LINK.</p>
+        <p style="color:var(--neon-yellow);font-size:10px;">EXAMPLE: data-src="https://drive.google.com/file/d/FILE_ID/view"</p>
       </div>`;
     controls.style.display = 'none';
+
   } else {
-    const vid = document.createElement('video');
-    vid.src = src;
-    vid.id  = 'vmodalVideoEl';
-    vid.preload = 'metadata';
-    vid.style.cssText = 'width:100%;height:100%;display:block;object-fit:contain;background:#000;';
-    wrap.appendChild(vid);
-    controls.style.display = 'flex';
-    activeVideo = vid;
-    bindVideoControls(vid);
+    const embedUrl = driveEmbedUrl(src);
+
+    if (embedUrl) {
+      // ── Google Drive embed ──
+      // Drive's own player handles all controls — hide custom bar
+      const iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.allow = 'autoplay';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'width:100%;height:100%;display:block;border:none;background:#000;';
+      wrap.appendChild(iframe);
+      controls.style.display = 'none'; // Drive player has its own UI
+
+    } else {
+      // ── Local / direct .mp4 ──
+      const vid = document.createElement('video');
+      vid.src = src;
+      vid.id  = 'vmodalVideoEl';
+      vid.preload = 'metadata';
+      vid.style.cssText = 'width:100%;height:100%;display:block;object-fit:contain;background:#000;';
+      wrap.appendChild(vid);
+      controls.style.display = 'flex';
+      activeVideo = vid;
+      bindVideoControls(vid);
+    }
   }
 
   document.getElementById('videoModal').classList.add('active');
@@ -2086,9 +2122,9 @@ document.querySelectorAll('.media-card[data-thumb]').forEach(card => {
 
   // Only set src if it looks like a real path (not the placeholder patterns)
   const isPlaceholder = thumb.startsWith('your-')
-    || thumb.startsWith('videos/')
-    || thumb.startsWith('thumbnails/')
-    || thumb.startsWith('images/');
+    || (thumb.startsWith('videos/') && !thumb.startsWith('Videos/'))
+    || (thumb.startsWith('thumbnails/') && !thumb.startsWith('Thumbnails/'))
+    || (thumb.startsWith('images/') && !thumb.startsWith('Images/'));
 
   if (!isPlaceholder) {
     // Absolute or relative path supplied by user
